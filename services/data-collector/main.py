@@ -1,6 +1,7 @@
 from fastapi import FastAPI, HTTPException
 import requests
 from dotenv import load_dotenv
+from loguru import logger
 import os
 
 load_dotenv()
@@ -114,8 +115,10 @@ def get_news(
         }
 
     except requests.exceptions.RequestException as e:
+        logger.error(f"Error fetching news: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Error fetching news: {str(e)}")
     except ValueError as e:
+        logger.error(f"Error fetching news: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Error fetching news: {str(e)}")
 
 
