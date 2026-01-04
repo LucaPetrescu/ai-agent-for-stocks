@@ -11,9 +11,12 @@ URL = "https://api.marketaux.com/v1/news/all"
 LANGUAGE = "en"
 LIMIT = 10
 
+"""
 # ETF Categories
-# Defense & Aerospace ETFs (including European exposure)
-DEFENSE_AEROSPACE_ETFS = "ITA,PPA,XAR,DFEN,EUAD,EUDF"  # US Aerospace & Defense ETFs
+"""
+
+# Defense & Aerospace ETFs
+DEFENSE_AEROSPACE_ETFS = "ITA,PPA,XAR,DFEN,EUAD,EUDF"
 
 # Cloud, Tech & AI ETFs
 CLOUD_TECH_AI_ETFS = "CLOU,SKYY,WCLD,BOTZ,ROBT,AIQ,ARKK,QQQ,IGV,VGT"
@@ -24,10 +27,21 @@ SEMICONDUCTOR_ETFS = "SMH,SOXX,XSD,SOXL,PSI"
 # Combined default ETF list
 DEFAULT_ETFS = f"{DEFENSE_AEROSPACE_ETFS},{CLOUD_TECH_AI_ETFS},{SEMICONDUCTOR_ETFS}"
 
-# Stock symbols for these sectors (optional, can be used alongside ETFs)
-DEFENSE_STOCKS = "BA,LMT,NOC,RTX,GD,TXT,HII"
+
+"""
+# Stocks categories
+"""
+# Defense & Aerospace Stocks
+DEFENSE_STOCKS = "BA,LMT,NOC,RTX,GD,TXT,HII,RHM.DE,RHMG"
+
+# Tech & AI Stocks
 TECH_AI_STOCKS = "AAPL,MSFT,GOOGL,META,NVDA,AMZN,TSLA,PLTR,C3AI"
+
+# Semiconductors Stocks
 SEMICONDUCTOR_STOCKS = "NVDA,AMD,INTC,AVGO,QCOM,TXN,MU,AMAT,LRCX,KLAC"
+
+# Combined default stocks list
+DEFAULT_STOCKS = f"{DEFENSE_STOCKS},{TECH_AI_STOCKS},{SEMICONDUCTOR_STOCKS}"
 
 app = FastAPI()
 
@@ -56,10 +70,11 @@ def get_news(
         industries: Industry categories to filter by (default: Technology,Industrials)
     
     ETF Categories available:
-    - Defense & Aerospace: ITA, PPA, XAR, DFEN
+    - Defense & Aerospace: ITA, PPA, XAR, DFEN, EUAD, EUDF
     - Cloud/Tech/AI: CLOU, SKYY, WCLD, BOTZ, ROBT, AIQ, ARKK, QQQ, IGV, VGT
     - Semiconductors: SMH, SOXX, XSD, SOXL, PSI
     """
+
     # Build default symbols list based on flags
     if symbols is None and (include_etfs or include_stocks):
         symbol_list = []
@@ -94,14 +109,13 @@ def get_news(
                 "industries": industries,
                 "symbols": symbols,
                 "limit": limit,
-                "include_etfs": include_etfs,
-                "include_stocks": include_stocks,
-                "filter_entities": filter_entities
             },
             "news": data
         }
 
     except requests.exceptions.RequestException as e:
+        raise HTTPException(status_code=500, detail=f"Error fetching news: {str(e)}")
+    except ValueError as e:
         raise HTTPException(status_code=500, detail=f"Error fetching news: {str(e)}")
 
 
