@@ -1,7 +1,13 @@
 services:
   data-collector:
-    build: ../data-collector
+    build: ../services/data-collector
     ports:
       - "8000:8000"
     env_file:
-      - ../data-collector/.env
+      - ../services/data-collector/.env
+  telegram-bot:
+    build: ../services/telegram-bot
+    env_file:
+      - ../services/telegram-bot/.env
+    depends_on:
+      - data-collector
