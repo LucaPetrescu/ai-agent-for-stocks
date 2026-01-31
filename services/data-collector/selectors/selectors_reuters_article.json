@@ -1,6 +1,0 @@
-{
-    "title": "h1[data-testid=\"Heading\"]::text",
-    "date": "time > span:nth-child(2)::text",
-    "author": "div[class*=\"article-header__author\"]::text",
-    "paragraphs": "p[data-testid*=\"paragraph-\"]::text"
-}
