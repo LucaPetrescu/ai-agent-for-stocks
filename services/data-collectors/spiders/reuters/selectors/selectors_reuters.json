@@ -1,0 +1,6 @@
+{
+    "titles": "a[data-testid=\"Heading\"]::text",
+    "urls": "a[data-testid=\"Heading\"]::attr(href)",
+    "dates": "time[data-testid=\"Body\"]::attr(datetime)",
+    "topics": "span[data-testid=\"Text\"]::text"
+}
